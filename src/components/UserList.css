@@ -1,0 +1,27 @@
+.user-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.button-add-user {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  background-color: var(--primary-color); /* Blue */
+  color: var(--subtle-shade);
+  font-weight: 700;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1.5rem;
+  list-style: none;
+}
+.userlist-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,155 @@
+.user-form-container {
+  width: 30%;
+  padding: 20px;
+  border: 1px solid var(--text-color); /* Dark Gray */
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background: var(--background); /* White */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulsate 3s infinite,
+    fade-in 3s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  opacity: 0.9;
+}
+
+.user-form-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--primary-color); /* Blue */
+}
+.form {
+  overflow: hidden;
+}
+.user-form-container label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+  margin-top: 1rem;
+}
+/* Input Styles */
+
+.user-form-input {
+  width: 100%;
+  background-color: antiquewhite;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--text-color); /* Dark Gray */
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Select Styles */
+.category-select {
+  cursor: pointer;
+  font-size: 0.9rem;
+  background-color: antiquewhite;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  height: 40px;
+}
+
+/* Checkbox Styles */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-input {
+  margin-right: 10px;
+}
+
+/* Button Styles */
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color); /* Blue */
+  color: var(--subtle-shade);
+  font-weight: 700;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+.submit-button:hover {
+  transition: 1s all;
+  background-color: var(--hover-focus-color); /* Darker Blue */
+}
+
+.checkbox-container span {
+  font-size: 14px;
+  color: var(--primary-color); /* Dark Gray */
+}
+input[type="checkbox"] {
+  accent-color: var(--primary-color);
+  background-color: black;
+}
+@media (max-width: 768px) {
+  .user-form-container {
+    width: 80%;
+  }
+
+  .user-form-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .user-input,
+  .category-select {
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+
+  .checkbox-container {
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  .submit-button {
+    padding: 8px;
+  }
+}
+@keyframes pulsate {
+  0% {
+    border-color: var(--primary-color);
+  }
+  50% {
+    border-color: var(--accent-color);
+  }
+  100% {
+    border-color: var(--primary-color);
+  }
+}
+.error {
+  border: 3px solid red;
+}
+.error-bottom {
+  border-bottom: 3px solid red;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,27 @@
+:root {
+  /* Background Color - Slightly darker gray */
+  --background: linear-gradient(0deg, #000, #1f1c18); /* Slightly Darker Gray */
+
+  /* Primary Color - Complementary color to the background gradient */
+  --primary-color: #ffa500; /* Dark Yellow */
+
+  /* Secondary Color - A contrasting color */
+  --secondary-color: #00796b; /* Dark Teal */
+
+  /* Text Color - Light gray for good contrast */
+  --text-color: #eceff1; /* Light Gray */
+
+  /* Accent Color - A contrasting color */
+  --accent-color: #d32f2f; /* Dark Red */
+
+  /* Subtle Shade - A slightly darker shade of the background color */
+  --subtle-shade: #161614; /* Dark Gray */
+
+  /* Hover/Focus Color - A contrasting color */
+  --hover-focus-color: antiquewhite; /* Purple */
+}
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}

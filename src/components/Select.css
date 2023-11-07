@@ -1,0 +1,32 @@
+/* Select Container */
+.select-container {
+  margin-top: 10px;
+  margin-bottom: 2rem;
+}
+
+/* Select Label */
+.select-label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: var(--text-color); /* Dark Gray */
+}
+
+/* Select Input */
+.select-input {
+  cursor: pointer;
+  background-color: antiquewhite;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--text-color); /* Dark Gray */
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+option {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Select Input Hover Effect */
+.select-input:hover {
+  border-color: var(--primary-color); /* Change border color on hover */
+}
