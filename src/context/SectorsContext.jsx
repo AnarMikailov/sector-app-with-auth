@@ -1,4 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import toast, { Toaster } from "react-hot-toast";
 import { db } from "../utils/firebase";
 import {
@@ -10,22 +17,19 @@ import {
   doc,
 } from "firebase/firestore";
 const SectorContext = createContext();
-
 export const ContextProvider = ({ children }) => {
+  const navigateTo = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const sectorCollectionsRef = collection(db, "Sectors");
+  const [user, setUser] = useState(null);
   const userCollectionsRef = collection(db, "users");
   const [sectors, setSectors] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSectorOptions, setSelectedSectorOptions] = useState("");
-  const [editedCategory, setEditedCategory] = useState("");
-  const [editedSectorOptions, setEditedSectorOptions] = useState("");
   const [isValid, setIsValid] = useState(true);
   const [editinisValid, setEditinisValid] = useState(true);
   const [userInfo, setUserInfo] = useState({
     name: "",
-    id: "",
-    category: "",
-    sector_name: "",
+    password: "",
   });
   const [editedUserInfo, setEditedUserInfo] = useState({
     name: "",
@@ -61,6 +65,59 @@ export const ContextProvider = ({ children }) => {
       theme: "dark",
     });
   };
+  //===============================================
+  // Handle user authentication state changes
+  //===============================================
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup on unmount
+  }, []);
+
+  //===============================================
+  // User login
+  //===============================================
+
+  const logIn = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        username,
+        password
+      );
+      const currentUser = userCredential.user;
+      if (currentUser) {
+        // Set the authenticated user in the state
+        console.log(currentUser);
+        setUser(currentUser);
+        notifySucces();
+        navigateTo("/users");
+      } else {
+        notifyError();
+      }
+    } catch (error) {
+      notifyError();
+    }
+  };
+
+  //===============================================
+  // User logout
+  //===============================================
+  const logOut = async () => {
+    try {
+      await auth.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   //=========================================================
   // Fetching all categories and sectors from databse
   //=========================================================
@@ -80,49 +137,13 @@ export const ContextProvider = ({ children }) => {
   //=========================================
   // Taking data from Form and adding it to userInfo State.And then we will send userInfo to database
   //=========================================================================================
-  const selectedSector = sectors.find(
-    (sector) => sector.category === selectedCategory
-  );
 
-  const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value);
-    setUserInfo((prev) => ({
-      ...prev,
-      category: event.target.value,
-    }));
-  };
-  const handleSectorChange = (event) => {
-    setSelectedSectorOptions(event.target.value);
-    setUserInfo((prev) => ({
-      ...prev,
-      sector_name: event.target.value,
-      id: Math.random(),
-    }));
-  };
   const handleInputChange = (event) => {
     setUserInfo((prev) => ({
       ...prev,
       name: event.target.value,
     }));
   };
-  const categoryOptions = sectors.map((sector) => (
-    <option key={sector.value}>{sector.category}</option>
-  ));
-
-  const headingOptions = selectedSector?.headings.map((heading) => (
-    <option key={heading.value} id={heading.value}>
-      {heading.label}
-    </option>
-  ));
-  const editedheadingOptions = editedCategory
-    ? sectors
-        .find((sector) => sector.category === editedCategory)
-        ?.headings.map((heading) => (
-          <option key={heading.value} id={heading.value}>
-            {heading.label}
-          </option>
-        ))
-    : null;
 
   //===============================================
   //Sending userInfo to Database
@@ -156,21 +177,6 @@ export const ContextProvider = ({ children }) => {
   // Updating User(Edit user)
   //================================
 
-  const handleEditCategoryChange = (event) => {
-    setEditedCategory(event.target.value);
-    setEditedUserInfo((prev) => ({
-      ...prev,
-      name: event.target.value,
-    }));
-  };
-  const handleEditSectorChange = (event) => {
-    setEditedSectorOptions(event.target.value);
-    setEditedUserInfo((prev) => ({
-      ...prev,
-      sector_name: event.target.value,
-      // id: userInfo.id,
-    }));
-  };
   const handleEditInputChange = (event) => {
     setEditedUserInfo((prev) => ({
       ...prev,
@@ -217,16 +223,6 @@ export const ContextProvider = ({ children }) => {
       value={{
         sectors,
         getSectors,
-        selectedSector,
-        selectedCategory,
-        handleCategoryChange,
-        categoryOptions,
-        headingOptions,
-        handleSectorChange,
-        selectedSectorOptions,
-        setSelectedSectorOptions,
-        setEditedSectorOptions,
-        setSelectedCategory,
         handleInputChange,
         userInfo,
         setUserInfo,
@@ -234,14 +230,7 @@ export const ContextProvider = ({ children }) => {
         userList,
         handleEditUser,
         handleDeleteUser,
-        handleEditCategoryChange,
-        handleEditSectorChange,
         handleEditInputChange,
-        editedUserInfo,
-        editedCategory,
-        editedSectorOptions,
-        editedheadingOptions,
-        setEditedUserInfo,
         isValid,
         setIsValid,
         isChecked,
@@ -251,6 +240,13 @@ export const ContextProvider = ({ children }) => {
         notifySucces,
         notifyError,
         fecthUsers,
+        username,
+        setUsername,
+        password,
+        setPassword,
+        logIn,
+        logOut,
+        user,
       }}
     >
       {children}

@@ -10,10 +10,9 @@ const UserList = () => {
     userList,
     setUserInfo,
     setIsValid,
-    setSelectedCategory,
-    setSelectedSectorOptions,
     setIsChecked,
     fecthUsers,
+    logOut,
   } = useSectorContext();
   const [editingItemId, setEditingItemId] = useState(null);
   useEffect(() => {
@@ -33,10 +32,8 @@ const UserList = () => {
       sector_name: "",
     });
     setIsValid(true);
-    setSelectedCategory("");
-    setSelectedSectorOptions("");
     setIsChecked(false);
-
+    logOut();
     navigateTo("/");
   };
   return (

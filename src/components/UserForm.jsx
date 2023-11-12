@@ -1,39 +1,50 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Select from "./Select";
 import { useSectorContext } from "../context/SectorsContext";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 import "../components/UserForm.css";
 
 const UserForm = ({ notify }) => {
   const navigateTo = useNavigate();
   const {
-    selectedCategory,
-    handleCategoryChange,
-    categoryOptions,
-    handleInputChange,
-    addUser,
     userInfo,
-    selectedSectorOptions,
     isValid,
     isChecked,
     setIsChecked,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    logIn,
+    user,
   } = useSectorContext();
 
   const checkCheckboxState = () => {
     setIsChecked(!isChecked);
   };
 
-  const handleSaveClick = () => {
-    if (
-      userInfo.name.trim() === "" ||
-      selectedCategory === "Select Category" ||
-      !isChecked
-    ) {
-      notify();
-    } else {
-      addUser();
-
-      navigateTo("/users");
+  const handleSaveClick = async () => {
+    try {
+      if (username.trim() === "" || password.trim() === "" || !isChecked) {
+        notify();
+      } else {
+        logIn();
+        // navigateTo("/users");
+        console.log(user);
+        // Check if authentication was successful
+        if (user) {
+          // Authentication successful, navigate to the "/users" page
+        } else {
+          // Authentication failed
+          notify();
+        }
+      }
+    } catch (err) {
+      console.error(err.message);
     }
   };
 
@@ -47,35 +58,23 @@ const UserForm = ({ notify }) => {
             className={`user-form-input ${
               !isValid && userInfo.name === "" ? "error" : ""
             }`}
-            onChange={handleInputChange}
+            onChange={(e) => setUsername(e.target.value)}
             type="text"
-            value={userInfo.name}
+            value={username}
           />
           <label>Password*</label>
           <input
             className={`user-form-input ${
               !isValid && userInfo.name === "" ? "error" : ""
             }`}
-            onChange={handleInputChange}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
-            // value={userInfo.name}
+            value={password}
           />
-          {/* <select
-            className={`category-select ${
-              !isValid && userInfo.category === "" ? "error" : ""
-            }`}
-            name="category"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            <option>Select Category</option>
-            {categoryOptions}
-          </select> */}
         </form>
       </div>
       {
         <>
-          {/* <Select /> */}
           <div className="checkbox-container">
             <input
               className="checkbox-input"

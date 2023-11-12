@@ -18,8 +18,6 @@ const UserItem = ({
     handleEditSectorChange,
     handleEditInputChange,
     editedUserInfo,
-    editedCategory,
-    editedSectorOptions,
     editedheadingOptions,
     setEditedUserInfo,
     handleDeleteUser,
